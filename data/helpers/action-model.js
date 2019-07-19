@@ -8,6 +8,15 @@ const getAllActions = () => {
   });
 };
 
+const getActionById = id => {
+  return db
+    .select("*")
+    .from("actions")
+    .where({ id })
+    .first()
+    .then(action => mappers.actionToBody(action));
+};
+
 const addAction = (action, projectId) => {
   return db("actions")
     .insert(action)
@@ -16,5 +25,6 @@ const addAction = (action, projectId) => {
 
 module.exports = {
   addAction,
-  getAllActions
+  getAllActions,
+  getActionById
 };
