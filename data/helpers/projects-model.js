@@ -38,9 +38,17 @@ const addProject = project => {
     .then(([id]) => getProjectById(id));
 };
 
+const editProject = (id, project) => {
+  return db("projects")
+    .update(project)
+    .where({ id })
+    .then(count => (count > 0 ? getProjectById(id) : null));
+};
+
 module.exports = {
   getAllProjects,
   getProjectById,
   getProjectActions,
-  addProject
+  addProject,
+  editProject
 };

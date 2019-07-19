@@ -19,9 +19,7 @@ router.get("/", async (req, res) => {
 });
 router.get("/:id", projectMiddleware.validateProjectId, async (req, res) => {
   try {
-    const { id } = req.params;
-    const project = await Projects.getProjectById(id);
-    res.status(200).json(project);
+    res.status(200).json(req.project);
   } catch (error) {
     res.status(500).json({
       message: "Failed to get project"
@@ -57,5 +55,17 @@ router.post(
     }
   }
 );
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { body, params } = req;
+    const editedProject = await Projects.editProject(params.id, body);
+    res.status(201).json(editedProject);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to add project"
+    });
+  }
+});
 
 module.exports = router;
