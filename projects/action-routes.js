@@ -2,6 +2,7 @@ const express = require("express");
 
 const Actions = require("../data/helpers/action-model");
 
+const { actionMiddleware } = require("../middleware");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", actionMiddleware.validateActionId, async (req, res) => {
   try {
     const { id } = req.params;
     const action = await Actions.getActionById(id);

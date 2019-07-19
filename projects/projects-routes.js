@@ -3,6 +3,8 @@ const express = require("express");
 const Projects = require("../data/helpers/projects-model");
 const Actions = require("../data/helpers/action-model");
 
+const { projectMiddleware, actionMiddleware } = require("../middleware");
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -15,7 +17,7 @@ router.get("/", async (req, res) => {
     });
   }
 });
-router.get("/:id", async (req, res) => {
+router.get("/:id", projectMiddleware.validateProjectId, async (req, res) => {
   try {
     const { id } = req.params;
     const project = await Projects.getProjectById(id);
@@ -27,7 +29,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", projectMiddleware.validateProject, async (req, res) => {
   try {
     const newProject = await Projects.addProject(req.body);
     res.status(201).json(newProject);
@@ -38,17 +40,22 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:id/actions", async (req, res) => {
-  try {
-    const { body, params } = req;
-    const newAction = { ...body, project_id: params.id };
-    await Actions.addAction(newAction, params.id);
-    res.status(201).json(newAction);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to add action"
-    });
+router.post(
+  "/:id/actions",
+  projectMiddleware.validateProjectId,
+  actionMiddleware.validateAction,
+  async (req, res) => {
+    try {
+      const { body, params } = req;
+      const newAction = { ...body, project_id: params.id };
+      await Actions.addAction(newAction, params.id);
+      res.status(201).json(newAction);
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed to add action"
+      });
+    }
   }
-});
+);
 
 module.exports = router;
