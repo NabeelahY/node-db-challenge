@@ -5,6 +5,16 @@ const Actions = require("../data/helpers/action-model");
 
 const router = express.Router();
 
+router.get("/projects", async (req, res) => {
+  try {
+    const projects = await Projects.getAllProjects();
+    res.status(200).json(projects);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to get projects"
+    });
+  }
+});
 router.get("/projects/:id", async (req, res) => {
   try {
     const { id } = req.params;

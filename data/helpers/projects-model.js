@@ -1,6 +1,12 @@
 const db = require("../dbConfig");
 const mappers = require("./mappers");
 
+const getAllProjects = () => {
+  let query = db("projects");
+  return query.then(projects => {
+    return projects.map(project => mappers.projectToBody(project));
+  });
+};
 const getProjectActions = projectId => {
   return db("actions")
     .where("project_id", projectId)
@@ -26,7 +32,6 @@ const getProjectById = id => {
     }
   });
 };
-
 const addProject = project => {
   return db("projects")
     .insert(project)
@@ -34,6 +39,7 @@ const addProject = project => {
 };
 
 module.exports = {
+  getAllProjects,
   getProjectById,
   getProjectActions,
   addProject
