@@ -45,10 +45,17 @@ const editProject = (id, project) => {
     .then(count => (count > 0 ? getProjectById(id) : null));
 };
 
+const deleteProject = id => {
+  return db("projects")
+    .where("id", id)
+    .del();
+};
+
 module.exports = {
   getAllProjects,
   getProjectById,
   getProjectActions,
   addProject,
-  editProject
+  editProject,
+  deleteProject
 };

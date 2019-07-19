@@ -68,4 +68,16 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", projectMiddleware.validateProjectId, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Projects.deleteProject(id);
+    res.status(200).json({ deleted_project: req.project });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error deleting the project"
+    });
+  }
+});
+
 module.exports = router;
