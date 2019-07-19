@@ -16,7 +16,7 @@ exports.up = function(knex) {
       tbl
         .text("notes", 256)
         .notNullable();
-      tbl.boolean("is_completed");
+      tbl.boolean("is_completed").defaultTo(false);
       tbl
         .integer("project_id")
         .unsigned()
