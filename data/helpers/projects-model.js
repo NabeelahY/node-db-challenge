@@ -14,7 +14,7 @@ const getProjectById = id => {
     .where({ id })
     .first();
   const promises = [query, getProjectActions(id)];
-  return Promise.all(promises).then((results) => {
+  return Promise.all(promises).then(results => {
     let [project, actions] = results;
 
     if (project) {
@@ -27,7 +27,14 @@ const getProjectById = id => {
   });
 };
 
+const addProject = project => {
+  return db("projects")
+    .insert(project)
+    .then(([id]) => getProjectById(id));
+};
+
 module.exports = {
   getProjectById,
-  getProjectActions
+  getProjectActions,
+  addProject
 };
