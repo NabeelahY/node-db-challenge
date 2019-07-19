@@ -5,7 +5,7 @@ const Actions = require("../data/helpers/action-model");
 
 const router = express.Router();
 
-router.get("/projects", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const projects = await Projects.getAllProjects();
     res.status(200).json(projects);
@@ -15,7 +15,7 @@ router.get("/projects", async (req, res) => {
     });
   }
 });
-router.get("/projects/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const project = await Projects.getProjectById(id);
@@ -27,7 +27,7 @@ router.get("/projects/:id", async (req, res) => {
   }
 });
 
-router.post("/projects", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const newProject = await Projects.addProject(req.body);
     res.status(201).json(newProject);
@@ -38,7 +38,7 @@ router.post("/projects", async (req, res) => {
   }
 });
 
-router.post("/projects/:id/actions", async (req, res) => {
+router.post("/:id/actions", async (req, res) => {
   try {
     const { body, params } = req;
     const newAction = { ...body, project_id: params.id };
