@@ -1,5 +1,4 @@
 const Action = require("../data/helpers/action-model");
-const Project = require("../data/helpers/projects-model");
 module.exports = {
   validateAction,
   validateActionId
@@ -29,7 +28,7 @@ async function validateActionId(req, res, next) {
         .json({ message: "IDs should be a numerical value" });
     }
 
-    const action = await Action.get(id);
+    const action = await Action.getActionById(id);
     if (!Object.keys(action).length) {
       return res.status(404).json({ message: "Action ID does not exist" });
     } else {
@@ -37,6 +36,6 @@ async function validateActionId(req, res, next) {
       next();
     }
   } catch (error) {
-    return res.status(400).json({ message: "Sever error" });
+    return res.status(400).json({ message: "Server error" });
   }
 }

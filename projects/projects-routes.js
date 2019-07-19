@@ -56,7 +56,7 @@ router.post(
   }
 );
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", projectMiddleware.validateProjectId, async (req, res) => {
   try {
     const { body, params } = req;
     const editedProject = await Projects.editProject(params.id, body);
